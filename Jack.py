@@ -25,8 +25,8 @@ event_date = "2025-01-17"
 event_time = "14:30"
 event_duration = 1
 timezone = "America/New_York"
-email_file = ""
-email_column = ""
+email_file = "Roster.csv"
+email_column = "Campus Email"
 email_checking_bool = False
 
 # Replace 'YOUR_CHANNEL_ID' with the channel ID where you want the bot to post
