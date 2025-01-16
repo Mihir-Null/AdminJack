@@ -27,6 +27,7 @@ event_duration = 1
 timezone = "America/New_York"
 email_file = ""
 email_column = ""
+email_checking_bool = False
 
 # Replace 'YOUR_CHANNEL_ID' with the channel ID where you want the bot to post
 channel_id = "announcements"
@@ -88,7 +89,7 @@ client.run(os.environ.get('DISCORD_BOT_TOKEN'))
 
 # Google Calendar Section
 
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
 CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
 
 def authenticate_user():
@@ -155,6 +156,29 @@ authenticate_user()
 print("flag2")
 add_to_google_calendar(event_description=description, event_date=event_date, event_time=event_time, timezone=timezone, meeting_link=meeting_link)
 
+def send_email_with_gmail_api(creds, recipient_email, subject, body):
+    """
+    Send an email using the Gmail API.
+    """
+    try:
+        service = build('gmail', 'v1', credentials=creds)
+
+        # Create the email content
+        message = MIMEText(body)
+        message['to'] = recipient_email
+        message['from'] = "me"
+        message['subject'] = subject
+
+        # Encode the message in base64
+        encoded_message = {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
+
+        # Send the email
+        send_message = service.users().messages().send(userId="me", body=encoded_message).execute()
+        print(f"Email sent to {recipient_email}: {send_message['id']}")
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+
 def send_email_to_list(event_description, event_date, event_time, meeting_link, csv_file, email_column):
     """
     Read a CSV file to get a list of emails and send the event details to each.
@@ -169,34 +193,32 @@ def send_email_to_list(event_description, event_date, event_time, meeting_link, 
 
             for row in reader:
                 email = row[email_column]
-                if email:
+                # do some basic email checking here
+                if email and (email.__contains__(".com") or email.__contains__(".edu") or email.__contains__(".in") or email_checking_bool):
                     email_list.append(email)
 
         print(f"Emails extracted: {email_list}")
 
-        sender_email = os.environ.get('EMAIL_USER')
-        sender_password = os.environ.get('EMAIL_PASS')
+        creds = authenticate_user()
         subject = "New Event Notification"
+        body_template = (
+            "Hello,\n\n"
+            "You are invited to the following event:\n\n"
+            "Event: {event_description}\n"
+            "Date: {event_date}\n"
+            "Time: {event_time}\n"
+            "Link: {meeting_link}\n\n"
+            "Best regards."
+        )
 
         for recipient_email in email_list:
-            try:
-                msg = MIMEMultipart()
-                msg['From'] = sender_email
-                msg['To'] = recipient_email
-                msg['Subject'] = subject
-
-                body = f"Hello,\n\nYou are invited to the following event:\n\nEvent: {event_description}\nDate: {event_date}\nTime: {event_time}\nLink: {meeting_link}\n\nBest regards."
-                msg.attach(MIMEText(body, 'plain'))
-
-                with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                    server.starttls()
-                    server.login(sender_email, sender_password)
-                    server.send_message(msg)
-
-                print(f"Email sent to {recipient_email}")
-
-            except Exception as e:
-                print(f"Failed to send email to {recipient_email}: {e}")
+            body = body_template.format(
+                event_description=event_description,
+                event_date=event_date,
+                event_time=event_time,
+                meeting_link=meeting_link
+            )
+            send_email_with_gmail_api(creds, recipient_email, subject, body)
 
     except Exception as e:
         print(f"Failed to process the CSV file: {e}")
