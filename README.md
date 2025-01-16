@@ -11,6 +11,7 @@ One click administration for interest clubs
   - Google calendar endpoints
   - discord bot integration/announcements
   - automatic relay emailing -> gmail integration/roundcube integration -> maybe terplink integration?
+    - automatic emailing for newsletters and room booking
   - automatic zoom recording uploading and sharing
   - selenium room booking, might also have to be used for terplink
   - automatic contacting of speakers?
