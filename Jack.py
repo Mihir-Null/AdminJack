@@ -9,6 +9,10 @@ from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+import smtplib
+import csv
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 event_name = ""
 description = "testing event description"
@@ -21,6 +25,8 @@ event_date = "2025-01-17"
 event_time = "14:30"
 event_duration = 1
 timezone = "America/New_York"
+email_file = ""
+email_column = ""
 
 # Replace 'YOUR_CHANNEL_ID' with the channel ID where you want the bot to post
 channel_id = "announcements"
@@ -148,3 +154,49 @@ print("flag1")
 authenticate_user()
 print("flag2")
 add_to_google_calendar(event_description=description, event_date=event_date, event_time=event_time, timezone=timezone, meeting_link=meeting_link)
+
+def send_email_to_list(event_description, event_date, event_time, meeting_link, csv_file, email_column):
+    """
+    Read a CSV file to get a list of emails and send the event details to each.
+    """
+    email_list = []
+    try:
+        with open(csv_file, mode='r') as file:
+            reader = csv.DictReader(file)
+            if email_column not in reader.fieldnames:
+                print(f"Column '{email_column}' not found in the CSV file.")
+                return
+
+            for row in reader:
+                email = row[email_column]
+                if email:
+                    email_list.append(email)
+
+        print(f"Emails extracted: {email_list}")
+
+        sender_email = os.environ.get('EMAIL_USER')
+        sender_password = os.environ.get('EMAIL_PASS')
+        subject = "New Event Notification"
+
+        for recipient_email in email_list:
+            try:
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = recipient_email
+                msg['Subject'] = subject
+
+                body = f"Hello,\n\nYou are invited to the following event:\n\nEvent: {event_description}\nDate: {event_date}\nTime: {event_time}\nLink: {meeting_link}\n\nBest regards."
+                msg.attach(MIMEText(body, 'plain'))
+
+                with smtplib.SMTP('smtp.gmail.com', 587) as server:
+                    server.starttls()
+                    server.login(sender_email, sender_password)
+                    server.send_message(msg)
+
+                print(f"Email sent to {recipient_email}")
+
+            except Exception as e:
+                print(f"Failed to send email to {recipient_email}: {e}")
+
+    except Exception as e:
+        print(f"Failed to process the CSV file: {e}")
