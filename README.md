@@ -25,3 +25,4 @@ One click administration for interest clubs
  - test and fix gmail formatting, and all other formatting
  - add cross integration between all platforms (messages have calendar event, etc.)
  - instagram posting
+ - listserv emailing with special message
