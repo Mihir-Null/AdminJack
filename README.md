@@ -15,3 +15,13 @@ One click administration for interest clubs
   - automatic zoom recording uploading and sharing
   - selenium room booking, might also have to be used for terplink
   - automatic contacting of speakers?
+  - linkedin posting if I have the time
+
+## ToDo
+ - go through discord bot oauth2 and authorize events
+ - fix formatting and integration on discord
+ - might want to add some way for discord admins to authorize the announcement when we need the same bot to work in multiple servers
+ - add default messages for each platform to add at the end
+ - test and fix gmail formatting, and all other formatting
+ - add cross integration between all platforms (messages have calendar event, etc.)
+ - instagram posting
