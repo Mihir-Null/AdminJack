@@ -15,6 +15,7 @@ One click administration for interest clubs
   - automatic zoom recording uploading and sharing
   - selenium room booking, might also have to be used for terplink
   - automatic contacting of speakers?
+  - automatic poster creation by prefilling fields -> could maybe do this by AI editing pdfs
   - linkedin posting if I have the time
 
 ## ToDo
