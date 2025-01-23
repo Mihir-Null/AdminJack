@@ -14,6 +14,7 @@ import csv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+club_name = ""
 event_name = ""
 description = "testing event description"
 image = "event_image.png" # file path
@@ -200,7 +201,7 @@ def send_email_to_list(event_description, event_date, event_time, meeting_link, 
         print(f"Emails extracted: {email_list}")
 
         creds = authenticate_user()
-        subject = "New Event Notification"
+        subject = "{club_name} Event: {event_name}"
         body_template = (
             "Hello,\n\n"
             "You are invited to the following event:\n\n"
@@ -208,7 +209,9 @@ def send_email_to_list(event_description, event_date, event_time, meeting_link, 
             "Date: {event_date}\n"
             "Time: {event_time}\n"
             "Link: {meeting_link}\n\n"
-            "Best regards."
+            "Best regards,\n"
+            "The {club_name} team\n\n"
+            "You are recieving this email because you are on the {club_name} mailing list "
         )
 
         for recipient_email in email_list:
@@ -222,3 +225,7 @@ def send_email_to_list(event_description, event_date, event_time, meeting_link, 
 
     except Exception as e:
         print(f"Failed to process the CSV file: {e}")
+
+def instagram_post(){
+    
+}
