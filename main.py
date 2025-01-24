@@ -17,6 +17,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import os
+import json
 
 # SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
 # CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
@@ -79,7 +80,7 @@ def open_event_details():
 
     tk.Label(details_window, text="Image Path:").grid(row=2, column=0, sticky="e")
     image_path = tk.Entry(details_window, width=50)
-    image_path.grid(row=1, column=1)
+    image_path.grid(row=2, column=1)
     tk.Button(details_window, text="Browse", command=lambda: image_path.insert(0, filedialog.askopenfilename())).grid(row=1, column=2)
 
     tk.Label(details_window, text="Instagram Access Token:").grid(row=3, column=0, sticky="e")
@@ -120,7 +121,7 @@ def open_event_details():
 
     tk.Label(details_window, text="Email CSV Path:").grid(row=12, column=0, sticky="e")
     csv_file_path = tk.Entry(details_window, width=50)
-    csv_file_path.grid(row=11, column=1)
+    csv_file_path.grid(row=12, column=1)
     tk.Button(details_window, text="Browse", command=lambda: csv_file_path.insert(0, filedialog.askopenfilename())).grid(row=11, column=2)
 
     tk.Label(details_window, text="Email Column:").grid(row=13, column=0, sticky="e")
