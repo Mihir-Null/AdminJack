@@ -1,14 +1,38 @@
+import discord
+from discord.ext import commands
+import os
+from dotenv import load_dotenv
+load_dotenv()
+import google
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+import smtplib
+import csv
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import os
-from event_post_bot import (
+from Jack import (
     post_event, 
     send_email_to_list, 
     add_to_google_calendar, 
     instagram_post,
-    authenticate_user
+    authenticate_user,
+    on_ready
 )
+
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
+CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
+
+# Initialize Discord client
+intents = discord.Intents.default()
+intents.message_content = True  # Enable message content intent
+client = discord.Client(intents=intents)
 
 def open_event_details():
     def save_details():
@@ -83,16 +107,20 @@ def open_event_details():
 def execute_action(action):
     try:
         if action == "discord":
-            # Replace with actual async call setup if needed
+            client.run(os.environ.get('DISCORD_BOT_TOKEN'))
             print("Posting to Discord...")
         elif action == "email":
+            authenticate_user()
             send_email_to_list(description, event_date, event_time, meeting_link, "emails.csv", "email")
         elif action == "calendar":
+            authenticate_user()
             add_to_google_calendar(description, event_date, event_time, timezone, meeting_link)
         elif action == "instagram":
             instagram_post(description, image)
         elif action == "all":
             # Execute all actions in sequence
+            authenticate_user()
+            client.run(os.environ.get('DISCORD_BOT_TOKEN'))
             print("Posting to Discord...")
             send_email_to_list(description, event_date, event_time, meeting_link, "emails.csv", "email")
             add_to_google_calendar(description, event_date, event_time, timezone, meeting_link)

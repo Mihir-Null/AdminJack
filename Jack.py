@@ -45,7 +45,7 @@ async def on_ready():
 
 
 # will want to modify this later https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object
-async def post_event(description: str, image, channel_name):
+async def post_event(description: str, image, channel_name, server_name):
     guild = discord.utils.get(client.guilds, name=server_name)  # Replace 'Your Guild Name' with the actual guild name
     if guild is None:
         print("Could not find the target guild. Please check the guild name.")
@@ -84,7 +84,7 @@ async def post_event(description: str, image, channel_name):
     except Exception as e:
         print(f"Failed to create or announce the event: {e}")
 
-client.run(os.environ.get('DISCORD_BOT_TOKEN'))
+#client.run(os.environ.get('DISCORD_BOT_TOKEN'))
 
 # Google Calendar Section
 
