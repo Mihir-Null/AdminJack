@@ -16,7 +16,7 @@ client = discord.Client(intents=intents)
 # server_name = None
 # event_duration = None
 
-# need to add adding a discord event automagically as well
+#comments are for wussie
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
@@ -66,4 +66,4 @@ async def post_event():
     
 
 print("posting to Discord")
-client.run(os.environ.get('DISCORD_BOT_TOKEN'))
+#client.run(os.environ.get('DISCORD_BOT_TOKEN'))
