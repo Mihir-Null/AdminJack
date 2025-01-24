@@ -26,29 +26,45 @@ import os
 # intents.message_content = True  # Enable message content intent
 # client = discord.Client(intents=intents)
 
+# File to store event details
+EVENT_DETAILS_FILE = "event_details.json"
+
+def save_event_details_to_file(details):
+    """Save event details to a JSON file."""
+    with open(EVENT_DETAILS_FILE, "w") as file:
+        json.dump(details, file, indent=4)
+
+def load_event_details_from_file():
+    """Load event details from a JSON file."""
+    if os.path.exists(EVENT_DETAILS_FILE):
+        with open(EVENT_DETAILS_FILE, "r") as file:
+            return json.load(file)
+    return {}
+
 def open_event_details():
     def save_details():
-        global event_name, description, image, instagram_access_token, instagram_user_id
-        global discord_announcement_channel, server_name, channel_name
-        global meeting_link, event_date, event_time, timezone
-        global csv_file, email_column
+        details = {
+            "event_name": event_name_entry.get(),
+            "description": desc_entry.get(),
+            "image": image_path.get(),
+            "instagram_access_token": insta_token_entry.get(),
+            "instagram_user_id": insta_user_id_entry.get(),
+            "discord_announcement_channel": discord_channel_entry.get(),
+            "server_name": server_name_entry.get(),
+            "channel_name": channel_name_entry.get(),
+            "meeting_link": meeting_link_entry.get(),
+            "event_date": event_date_entry.get(),
+            "event_time": event_time_entry.get(),
+            "timezone": timezone_entry.get(),
+            "csv_file": csv_file_path.get(),
+            "email_column": email_column_entry.get()
+        }
 
-        event_name = event_name_entry.get()
-        description = desc_entry.get()
-        image = image_path.get()
-        instagram_access_token = insta_token_entry.get()
-        instagram_user_id = insta_user_id_entry.get()
-        discord_announcement_channel = discord_channel_entry.get()
-        server_name = server_name_entry.get()
-        channel_name = channel_name_entry.get()
-        meeting_link = meeting_link_entry.get()
-        event_date = event_date_entry.get()
-        event_time = event_time_entry.get()
-        timezone = timezone_entry.get()
-        csv_file = csv_file_path.get()
-        email_column = email_column_entry.get()
-
+        save_event_details_to_file(details)
         messagebox.showinfo("Success", "Event details saved!")
+
+    # Load existing details if available
+    existing_details = load_event_details_from_file()
 
     details_window = tk.Toplevel(root)
     details_window.title("Enter Event Details")
