@@ -8,10 +8,10 @@
     "server_name": "random vids and tests",
     "channel_name": "dab",
     "meeting_link": "test3",
-    "event_date": "2025-01-25",
+    "event_date": "2025-01-26",
     "event_time": "19:00",
     "timezone": "EST",
-    "csv_file": "/media/mihir/Data/Data/Files/Projects/AdminJack/Roster.csv",
+    "csv_file": "",
     "email_column": "",
     "event_duration": "1"
 }

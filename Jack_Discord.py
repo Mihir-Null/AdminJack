@@ -8,24 +8,36 @@ intents = discord.Intents.default()
 intents.message_content = True  # Enable message content intent
 client = discord.Client(intents=intents)
 
-# event_name = None
-# meeting_link = None
-# description = None
-# image = None
-# channel_name = None
-# server_name = None
-# event_duration = None
+event_name = None
+description = None
+image = None
+instagram_access_token = None
+instagram_user_id = None
+discord_announcement_channel = None
+server_name = None
+channel_name = None
+meeting_link = None
+event_date = None
+event_time = None
+timezone = None
+csv_file = None
+email_column = None
+details = None
+event_duration = 1
 
 #comments are for wussie
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
-    await post_event(description=description, image=image, channel_name=channel_name)
+    await post_event()
     await client.close()
 
 
 # will want to modify this later https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object
-async def post_event():
+async def post_event(description=description, image=image, channel_name=channel_name, event_name = event_name, event_duration=event_duration, meeting_link=meeting_link, server_name = server_name):
+    #debug
+    for guild in bot.guilds:
+        print(f"Bot is in guild: {guild.name} (ID: {guild.id})")
     guild = discord.utils.get(client.guilds, name=server_name)  # Replace 'Your Guild Name' with the actual guild name
     if guild is None:
         print("Could not find the target guild. Please check the guild name.")
@@ -63,7 +75,16 @@ async def post_event():
 
     except Exception as e:
         print(f"Failed to create or announce the event: {e}")
-    
+
+def init_bot_details(description=description, image=image, channel_name=channel_name, event_name = event_name, event_duration=event_duration, meeting_link=meeting_link, server_name=server_name):
+    description = description
+    image = image
+    channel_name = channel_name
+    event_name = event_name
+    event_duration = event_duration
+    meeting_link = meeting_link
+    server_name = server_name
+
 
 print("posting to Discord")
 #client.run(os.environ.get('DISCORD_BOT_TOKEN'))
