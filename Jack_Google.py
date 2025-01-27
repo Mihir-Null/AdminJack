@@ -6,8 +6,11 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 import smtplib
 import csv
+import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import datetime
+from datetime import datetime,timedelta
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
 CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
@@ -38,22 +41,30 @@ def authenticate_user():
 
     return creds
 
-def add_to_google_calendar():
+def add_to_google_calendar(event_name, description, event_date, event_time, event_duration, timezone, meeting_link):
     """
     Add an event to the authenticated user's Google Calendar.
     """
     try:
+        start_datetime = datetime.strptime(f"{event_date}T{event_time}:00", "%Y-%m-%dT%H:%M:%S")
+        formatted_start_time = start_datetime.isoformat()
+
+        # Add the duration to the start time
+        end_datetime = start_datetime + timedelta(hours=event_duration)
+
+        # Format the result back to ISO 8601
+        formatted_end_time = end_datetime.isoformat()
+
         creds = authenticate_user()
         service = build('calendar', 'v3', credentials=creds)
-
         event = {
             'summary': event_name,
             'start': {
-                'dateTime': f'{event_date}T{event_time}:00',
+                'dateTime': formatted_start_time,
                 'timeZone': timezone
             },
             'end': {
-                'dateTime': f'{event_date}T{event_time}:00',
+                'dateTime': formatted_end_time,
                 'timeZone': timezone
             },
             'location': meeting_link,
@@ -94,7 +105,7 @@ def send_email_with_gmail_api(creds, recipient_email, subject, body):
     except HttpError as error:
         print(f"An error occurred: {error}")
 
-def send_email_to_list():
+def send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, email_checking_bool):
     """
     Read a CSV file to get a list of emails and send the event details to each.
     """

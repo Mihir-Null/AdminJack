@@ -214,15 +214,15 @@ def execute_action(action):
             print("Posting to Discord...")
             import Jack_Discord
             from Jack_Discord import call_post_event
-            call_post_event(description, image, channel_name, event_name, meeting_link, server_name,event_date,event_time, event_duration)
+            call_post_event(description, image, channel_name, event_name, meeting_link, server_name,event_date,event_time,timezone, event_duration)
         elif action == "email":
             import Jack_Google
             from Jack_Google import send_email_to_list
-            send_email_to_list()
+            send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, False)
         elif action == "calendar":
             import Jack_Google
             from Jack_Google import add_to_google_calendar
-            add_to_google_calendar()
+            add_to_google_calendar(event_name, description, event_date, event_time, event_duration, timezone, meeting_link)
         elif action == "instagram":
             import Jack_Insta
             from Jack_Insta import instagram_post
@@ -231,11 +231,11 @@ def execute_action(action):
             print("Posting to Discord...")
             import Jack_Discord
             from Jack_Discord import call_post_event
-            call_post_event(description, image, channel_name, event_name, meeting_link, server_name,event_date,event_time, event_duration)
+            call_post_event(description, image, channel_name, event_name, meeting_link, server_name,event_date,event_time, timezone, event_duration)
             import Jack_Google
             from Jack_Google import send_email_to_list,add_to_google_calendar
-            send_email_to_list()
-            add_to_google_calendar()
+            add_to_google_calendar(event_name, description, event_date, event_time, event_duration, timezone, meeting_link)
+            send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, False)
             import Jack_Insta
             from Jack_Insta import instagram_post
             instagram_post()
