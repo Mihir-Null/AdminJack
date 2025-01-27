@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import datetime
 from datetime import datetime,timedelta
+import base64
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
 CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
@@ -50,7 +51,7 @@ def add_to_google_calendar(event_name, description, event_date, event_time, even
         formatted_start_time = start_datetime.isoformat()
 
         # Add the duration to the start time
-        end_datetime = start_datetime + timedelta(hours=event_duration)
+        end_datetime = start_datetime + timedelta(hours=int(event_duration))
 
         # Format the result back to ISO 8601
         formatted_end_time = end_datetime.isoformat()
@@ -105,7 +106,7 @@ def send_email_with_gmail_api(creds, recipient_email, subject, body):
     except HttpError as error:
         print(f"An error occurred: {error}")
 
-def send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, email_checking_bool):
+def send_email_to_list(event_name, csv_file, email_column, description, event_date, event_time, meeting_link, email_checking_bool, club_name):
     """
     Read a CSV file to get a list of emails and send the event details to each.
     """
@@ -114,7 +115,7 @@ def send_email_to_list(csv_file, email_column, description, event_date, event_ti
         with open(csv_file, mode='r') as file:
             reader = csv.DictReader(file)
             if email_column not in reader.fieldnames:
-                print(f"Column '{email_column}' not found in the CSV file.")
+                print(f"Column '{email_column}' not found in the CSV file fieldnames {reader.fieldnames}")
                 return
 
             for row in reader:
@@ -126,17 +127,17 @@ def send_email_to_list(csv_file, email_column, description, event_date, event_ti
         print(f"Emails extracted: {email_list}")
 
         creds = authenticate_user()
-        subject = "{club_name} Event: {event_name}"
+        subject = f"{club_name} Event: {event_name}"
         body_template = (
             "Hello,\n\n"
             "You are invited to the following event:\n\n"
-            "Event: {description}\n"
-            "Date: {event_date}\n"
-            "Time: {event_time}\n"
-            "Link: {meeting_link}\n\n"
+            f"Event: {description}\n"
+            f"Date: {event_date}\n"
+            f"Time: {event_time}\n"
+            f"Location: {meeting_link}\n\n"
             "Best regards,\n"
-            "The {club_name} team\n\n"
-            "You are recieving this email because you are on the {club_name} mailing list "
+            f"The {club_name} team\n\n"
+            f"You are recieving this email because you are on the {club_name} mailing list "
         )
 
         for recipient_email in email_list:

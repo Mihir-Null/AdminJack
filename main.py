@@ -30,6 +30,7 @@ import json
 # File to store event details
 EVENT_DETAILS_FILE = "event_details.json"
 
+club_name = None
 event_name = None
 description = None
 image = None
@@ -65,8 +66,12 @@ def open_event_details():
     global details
     global event_name, description, image, instagram_access_token, instagram_user_id
     global discord_announcement_channel, server_name, channel_name, meeting_link
-    global event_date, event_time, timezone, csv_file, email_column
+    global event_date, event_time, timezone, csv_file, email_column, club_name, event_duration
     def save_details():
+        global details
+        global event_name, description, image, instagram_access_token, instagram_user_id
+        global discord_announcement_channel, server_name, channel_name, meeting_link
+        global event_date, event_time, timezone, csv_file, email_column, club_name, event_duration
         details = {
             "event_name": event_name_entry.get(),
             "description": desc_entry.get(),
@@ -82,7 +87,8 @@ def open_event_details():
             "timezone": timezone_entry.get(),
             "csv_file": csv_file_path.get(),
             "email_column": email_column_entry.get(),
-            "event_duration": event_duration_entry.get()
+            "event_duration": event_duration_entry.get(),
+            "club_name": club_name_entry.get()
         }
         
         event_name = details.get("event_name")
@@ -99,10 +105,11 @@ def open_event_details():
         timezone = details.get("timezone")
         csv_file = details.get("csv_file")
         email_column = details.get("email_column")
-        event_duration = details.get("event_duration")        
+        event_duration = details.get("event_duration")
+        club_name = details.get("club_name")        
 
         save_event_details_to_file(details)
-        messagebox.showinfo("Success", "Event details saved!")
+        messagebox.showinfo("Success","Event details saved!")
 
     # Load existing details if available
     details = load_event_details_from_file()
@@ -121,7 +128,8 @@ def open_event_details():
     timezone = details.get("timezone")
     csv_file = details.get("csv_file")
     email_column = details.get("email_column")
-    event_duration = details.get("event_duration")   
+    event_duration = details.get("event_duration")
+    club_name = details.get("club_name")   
 
     details_window = tk.Toplevel(root)
     details_window.title("Enter Event Details")
@@ -203,7 +211,12 @@ def open_event_details():
     event_duration_entry.grid(row=14, column=1)
     event_duration_entry.insert(0, event_duration if event_duration else "")
 
-    tk.Button(details_window, text="Save", command=save_details).grid(row=15, column=1, pady=10)
+    tk.Label(details_window, text="Club Name:").grid(row=15, column=0, sticky="e")
+    club_name_entry = tk.Entry(details_window, width=50)
+    club_name_entry.grid(row=15, column=1)
+    club_name_entry.insert(0, club_name if club_name else "")
+
+    tk.Button(details_window, text="Save", command=save_details).grid(row=16, column=1, pady=10)
 
 def execute_action(action):
     global event_name, description, image, instagram_access_token, instagram_user_id
@@ -218,7 +231,7 @@ def execute_action(action):
         elif action == "email":
             import Jack_Google
             from Jack_Google import send_email_to_list
-            send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, False)
+            send_email_to_list(event_name,csv_file, email_column, description, event_date, event_time, meeting_link, False, club_name)
         elif action == "calendar":
             import Jack_Google
             from Jack_Google import add_to_google_calendar
@@ -235,7 +248,7 @@ def execute_action(action):
             import Jack_Google
             from Jack_Google import send_email_to_list,add_to_google_calendar
             add_to_google_calendar(event_name, description, event_date, event_time, event_duration, timezone, meeting_link)
-            send_email_to_list(csv_file, email_column, description, event_date, event_time, meeting_link, False)
+            send_email_to_list(event_name, csv_file, email_column, description, event_date, event_time, meeting_link, False, club_name)
             import Jack_Insta
             from Jack_Insta import instagram_post
             instagram_post()
