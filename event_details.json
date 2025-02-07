@@ -1,6 +1,6 @@
 {
     "event_name": "test1",
-    "description": "test2",
+    "description": "llajdfjsjfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffad",
     "image": "/media/mihir/Data/Data/Files/Projects/AdminJack/event_image.png",
     "instagram_access_token": "",
     "instagram_user_id": "",
@@ -13,6 +13,7 @@
     "timezone": "EST",
     "csv_file": "/media/mihir/Data/Data/Files/Projects/AdminJack/Roster.csv",
     "email_column": "Campus Email",
-    "event_duration": "1",
-    "club_name": "UQA"
+    "event_duration": 1,
+    "club_name": "UQA",
+    "custom emails list": "maybe"
 }
