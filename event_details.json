@@ -14,5 +14,6 @@
     "csv_file": "/media/mihir/Data/Data/Files/Projects/AdminJack/Roster.csv",
     "email_column": "Campus Email",
     "event_duration": 1,
-    "club_name": "UQA"
+    "club_name": "UQA",
+    "custom emails list": "maybe"
 }

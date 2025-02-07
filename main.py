@@ -58,7 +58,7 @@ def open_event_details():
     fields = [
         "event_name", "description", "image", "instagram_access_token", "instagram_user_id", 
         "discord_announcement_channel", "server_name", "channel_name", "meeting_link", 
-        "event_date", "event_time", "timezone", "csv_file", "email_column", "event_duration", "club_name"
+        "event_date", "event_time", "timezone", "csv_file", "email_column", "event_duration", "club_name", "custom emails list"
     ]
     
     entries = {}
@@ -105,11 +105,16 @@ def execute_action(action):
             import Jack_Insta
             from Jack_Insta import instagram_post
             instagram_post()
+        elif action == "custom":
+            import Jack_Google
+            from Jack_Google import send_custom_emails
+            send_custom_emails(details, details["custom emails list"])
         elif action == "all":
             execute_action("discord")
             execute_action("email")
             execute_action("calendar")
             execute_action("instagram")
+            send_custom_emails(details, details["custom emails list"])
         
         messagebox.showinfo("Success", f"Action '{action}' executed successfully!")
     except Exception as e:
@@ -127,6 +132,7 @@ buttons = [
     ("Send Emails", "email"),
     ("Add to Calendar", "calendar"),
     ("Post to Instagram", "instagram"),
+    ("Custom Emails", "custom"),
     ("Execute All", "all")
 ]
 
