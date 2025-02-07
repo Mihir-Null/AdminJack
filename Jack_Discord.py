@@ -73,13 +73,20 @@ async def post_event(details, client):
         )
 
         print(f"Discord event created: {created_event.url}")
-
-        embed = discord.Embed(title=details['event_name'], description=(details['description'] + "\n@everyone"), color=0x00ff00)
-        embed.add_field(name="Event Link", value=created_event.url, inline=True)
+        desc=(details['description'] 
+                         + "\nLocation/Link: " + details['meeting_link']
+                         + "\nTime: " + event_start_time.strftime("%I:%M %p %Z") 
+                         + "\n@everyone")
+        embed = discord.Embed(
+            title=details['event_name'], 
+            #description=desc,
+            color=0x00ff00)
+        embed.add_field(name="Discord Event Link", value=created_event.url, inline=True)
         embed.set_image(url=f"attachment://event_image.png")
 
         with open(details['image'], "rb") as img_file:
             discord_file = discord.File(img_file, filename="event_image.png")
+            await channel.send(desc)
             await channel.send(file=discord_file, embed=embed)
 
         print("Event announced to Discord successfully!")

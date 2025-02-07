@@ -58,7 +58,7 @@ def open_event_details():
     fields = [
         "event_name", "description", "image", "instagram_access_token", "instagram_user_id", 
         "discord_announcement_channel", "server_name", "channel_name", "meeting_link", 
-        "event_date", "event_time", "timezone", "csv_file", "email_column", "event_duration", "club_name", "custom emails list"
+        "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list"
     ]
     
     entries = {}

@@ -71,6 +71,19 @@ def add_to_google_calendar(details):
 
         creds = authenticate_user()
         service = build('calendar', 'v3', credentials=creds)
+
+        calendar_id = None
+        calendar_list = service.calendarList().list().execute()
+
+        for calendar in calendar_list.get('items', []):
+            if calendar.get('summary') == details['calendar_name']:
+                calendar_id = calendar.get('id')
+                break
+        
+        if calendar_id is None:
+            print(f"Calendar '{details['calendar_name']}' not found. Proceeding with primary calendar.")
+            calendar_id = 'primary'
+
         event = {
             'summary': details['event_name'],
             'start': {'dateTime': formatted_start_time, 'timeZone': details['timezone']},
@@ -80,7 +93,7 @@ def add_to_google_calendar(details):
             'reminders': {'useDefault': True},
         }
         
-        event = service.events().insert(calendarId='primary', body=event).execute()
+        event = service.events().insert(calendarId=calendar_id, body=event).execute()
         print(f'Event created: {event.get("htmlLink")}')
         return event.get("htmlLink")
     
@@ -133,10 +146,21 @@ def send_email_to_list(details):
     except Exception as e:
         print(f"Failed to process the CSV file: {e}")
 
+
+
 def send_custom_emails(details, email_names):
     creds = authenticate_user()
+####################################[CUSTOM EMAILS HERE]######################################################
     emails_dict = {
+        # don't forget to separate the emails with a comma
         " e.g listserv request" :
+        (
+            f"recipient_email",
+            f"custom subject",
+            f"custom body"
+        )
+        ,
+        " emailname to be referenced in interface" :
         (
             f"recipient_email",
             f"custom subject",
@@ -144,6 +168,7 @@ def send_custom_emails(details, email_names):
         )
 
     }
+##############################################################################################################
     for email in email_names:
         recipient_email, subject, body = emails_dict[email]
         send_email_with_gmail_api(creds, recipient_email, subject, body)
