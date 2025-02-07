@@ -42,15 +42,19 @@ def open_event_details():
     details = load_event_details_from_file()
 
     def save_details():
-        for key, entry in entries.items():
-            details[key] = entry.get()
+        for key, widget in entries.items():
+            if isinstance(widget, tk.Text):  # For multi-line inputs
+                details[key] = widget.get("1.0", "end-1c").strip()
+            else:
+                details[key] = widget.get()
+        
         details["event_duration"] = int(details.get("event_duration", 1))  # Ensure integer type
         save_event_details_to_file(details)
         messagebox.showinfo("Success", "Event details saved!")
-    
+
     details_window = tk.Toplevel(root)
     details_window.title("Enter Event Details")
-    
+
     fields = [
         "event_name", "description", "image", "instagram_access_token", "instagram_user_id", 
         "discord_announcement_channel", "server_name", "channel_name", "meeting_link", 
@@ -58,17 +62,26 @@ def open_event_details():
     ]
     
     entries = {}
+
     for i, field in enumerate(fields):
         tk.Label(details_window, text=field.replace("_", " ").title() + ":").grid(row=i, column=0, sticky="e")
-        entry = tk.Entry(details_window, width=50)
-        entry.grid(row=i, column=1)
-        entry.insert(0, details.get(field, ""))
-        entries[field] = entry
-        
+
+        if field in ["description"]:  # Multi-line fields
+            text_widget = tk.Text(details_window, height=4, width=50, wrap="word")
+            text_widget.grid(row=i, column=1, pady=2)
+            text_widget.insert("1.0", details.get(field, ""))
+            entries[field] = text_widget
+        else:
+            entry = tk.Entry(details_window, width=50)
+            entry.grid(row=i, column=1, pady=2)
+            entry.insert(0, details.get(field, ""))
+            entries[field] = entry
+
+        # Add file browsing buttons for image and CSV fields
         if field in ["image", "csv_file"]:
             tk.Button(details_window, text="Browse", 
-                      command=lambda e=entry: e.insert(0, filedialog.askopenfilename())).grid(row=i, column=2)
-    
+                      command=lambda e=entries[field]: e.insert(0, filedialog.askopenfilename())).grid(row=i, column=2)
+
     tk.Button(details_window, text="Save", command=save_details).grid(row=len(fields), column=1, pady=10)
 
 def execute_action(action):

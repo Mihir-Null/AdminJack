@@ -133,4 +133,18 @@ def send_email_to_list(details):
     except Exception as e:
         print(f"Failed to process the CSV file: {e}")
 
+def send_custom_emails(details, email_names):
+    creds = authenticate_user()
+    emails_dict = {
+        " e.g listserv request" :
+        (
+            f"recipient_email",
+            f"custom subject",
+            f"custom body"
+        )
+
+    }
+    for email in email_names:
+        recipient_email, subject, body = emails_dict[email]
+        send_email_with_gmail_api(creds, recipient_email, subject, body)
 authenticate_user()
