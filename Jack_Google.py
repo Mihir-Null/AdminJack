@@ -150,24 +150,34 @@ def send_email_to_list(details):
 
 def send_custom_emails(details, email_names):
     creds = authenticate_user()
+    CUSTOM_EMAILS_FILE = "custom_emails.json"
+    if os.path.exists(CUSTOM_EMAILS_FILE) and os.path.getsize(CUSTOM_EMAILS_FILE) > 0:
+        with open(EVENT_DETAILS_FILE, "r") as file:
+            emails_dict = json.load(file)
+    else:
+        print("No custom emails found.")
+        emails_dict = {}
+    for key, value in emails_dict.items():
+        value["subject"] = value["subject"].format(**details)
+        value["body"] = value["body"].format(**details)
 ####################################[CUSTOM EMAILS HERE]######################################################
-    emails_dict = {
-        # don't forget to separate the emails with a comma
-        "example1" :
-        (
-            f"mihirtalati3@gmail.com",
-            f"{details['club_name']} Event: {details['event_name']}",
-            f"blah blah blah"
-        )
-        ,
-        "example2" :
-        (
-            f"walnutmocha@gmail.com",
-            f"custom subject",
-            f"custom body"
-        )
+    # emails_dict = {
+    #     # don't forget to separate the emails with a comma
+    #     "example1" :
+    #     (
+    #         f"mihirtalati3@gmail.com",
+    #         f"{details['club_name']} Event: {details['event_name']}",
+    #         f"blah blah blah"
+    #     )
+    #     ,
+    #     "example2" :
+    #     (
+    #         f"walnutmocha@gmail.com",
+    #         f"custom subject",
+    #         f"custom body"
+    #     )
 
-    }
+    # }
 ##############################################################################################################
     for email in email_names.split(","):
         recipient_email, subject, body = emails_dict[email]
