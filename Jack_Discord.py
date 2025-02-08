@@ -73,10 +73,15 @@ async def post_event(details, client):
         )
 
         print(f"Discord event created: {created_event.url}")
-        desc=(details['description'] 
-                         + "\nLocation/Link: " + details['meeting_link']
-                         + "\nTime: " + event_start_time.strftime("%I:%M %p %Z") 
-                         + "\n@everyone")
+        desc=(
+            "**" + details['event_name'] + "**" 
+            + "\n" + details['description']
+            + "\n" 
+            + "\nLocation/Link: " + details['meeting_link']
+            + "\nDate: " + event_start_time.strftime("%B %d, %Y")
+            + "\nTime: " + event_start_time.strftime("%I:%M %p %Z")
+            + "\n"
+            + "\n@everyone")
         embed = discord.Embed(
             title=details['event_name'], 
             #description=desc,

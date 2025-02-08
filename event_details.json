@@ -8,12 +8,14 @@
     "server_name": "random vids and tests",
     "channel_name": "dab",
     "meeting_link": "test3",
-    "event_date": "2026-01-28",
+    "event_date": "2025-02-09",
     "event_time": "16:30",
     "timezone": "EST",
     "csv_file": "/media/mihir/Data/Data/Files/Projects/AdminJack/Roster.csv",
     "email_column": "Campus Email",
-    "event_duration": 1,
+    "event_duration": 1.0,
     "club_name": "UQA",
-    "custom emails list": "maybe"
+    "custom emails list": "example1,example2",
+    "calendar_name": "",
+    "more_info_link": ""
 }

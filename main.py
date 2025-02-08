@@ -48,7 +48,7 @@ def open_event_details():
             else:
                 details[key] = widget.get()
         
-        details["event_duration"] = int(details.get("event_duration", 1))  # Ensure integer type
+        details["event_duration"] = float(details.get("event_duration", 1))  # Ensure float type
         save_event_details_to_file(details)
         messagebox.showinfo("Success", "Event details saved!")
 
@@ -56,9 +56,9 @@ def open_event_details():
     details_window.title("Enter Event Details")
 
     fields = [
-        "event_name", "description", "image", "instagram_access_token", "instagram_user_id", 
-        "discord_announcement_channel", "server_name", "channel_name", "meeting_link", 
-        "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list"
+        "event_name", "description", "image", "instagram_access_token", "instagram_user_id", "server_name", "channel_name", "meeting_link", 
+        "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list",
+        "more_info_link"
     ]
     
     entries = {}

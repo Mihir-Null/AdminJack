@@ -130,12 +130,12 @@ def send_email_to_list(details):
         creds = authenticate_user()
         subject = f"{details['club_name']} Event: {details['event_name']}"
         body_template = (
-            "Hello,\n\n"
-            "You are invited to the following event:\n\n"
-            f"Event: {details['description']}\n"
+            f"{details['event_name']}\n\n"
+            f"Event: {details['description']}\n\n"
             f"Date: {details['event_date']}\n"
             f"Time: {details['event_time']}\n"
             f"Location: {details['meeting_link']}\n\n"
+            f"For more information, visit: {details['more_info_link']}\n\n"
             "Best regards,\n"
             f"The {details['club_name']} team\n\n"
             f"You are receiving this email because you are on the {details['club_name']} mailing list "
@@ -153,23 +153,23 @@ def send_custom_emails(details, email_names):
 ####################################[CUSTOM EMAILS HERE]######################################################
     emails_dict = {
         # don't forget to separate the emails with a comma
-        " e.g listserv request" :
+        "example1" :
         (
-            f"recipient_email",
-            f"custom subject",
-            f"custom body"
+            f"mihirtalati3@gmail.com",
+            f"{details['club_name']} Event: {details['event_name']}",
+            f"blah blah blah"
         )
         ,
-        " emailname to be referenced in interface" :
+        "example2" :
         (
-            f"recipient_email",
+            f"walnutmocha@gmail.com",
             f"custom subject",
             f"custom body"
         )
 
     }
 ##############################################################################################################
-    for email in email_names:
+    for email in email_names.split(","):
         recipient_email, subject, body = emails_dict[email]
         send_email_with_gmail_api(creds, recipient_email, subject, body)
 authenticate_user()

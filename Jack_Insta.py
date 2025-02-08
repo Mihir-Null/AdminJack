@@ -1,44 +1,20 @@
 import os
-from dotenv import load_dotenv
+import json
 import requests
-load_dotenv()
-
-# File to store event details
-EVENT_DETAILS_FILE = "event_details.json"
-SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send']
-CLIENT_SECRET_FILE = 'client_secret.json'  # Update with your file path
-
-def save_event_details_to_file(details):
-    """Save event details to a JSON file."""
-    with open(EVENT_DETAILS_FILE, "w") as file:
-        json.dump(details, file, indent=4)
-
-def load_event_details_from_file():
-    """Load event details from a JSON file and ensure correct data types."""
-    if os.path.exists(EVENT_DETAILS_FILE) and os.path.getsize(EVENT_DETAILS_FILE) > 0:
-        with open(EVENT_DETAILS_FILE, "r") as file:
-            details = json.load(file)
-    else:
-        details = {}
-    
-    # Ensure proper types for numerical fields
-    details["event_duration"] = int(details.get("event_duration", 1))
-    
-    return details
 
 def instagram_post(details):
     """
-    Post an image and description to Instagram using the Instagram Graph API.
+    Post an image and description to Instagram Feed & Story using the Instagram Graph API.
     """
     try:
         instagram_access_token = os.environ.get("INSTAGRAM_ACCESS_TOKEN")
         instagram_user_id = os.environ.get("INSTAGRAM_USER_ID")
-        
-        # Step 1: Upload the image
+
+        # Step 1: Upload the image for feed post
         image_upload_url = f"https://graph.facebook.com/v15.0/{instagram_user_id}/media"
         image_payload = {
             "image_url": f"{os.path.abspath(details['image'])}",
-            "caption": details['description'],
+            "caption": details['event_name'] + "\n" + details['description'],
             "access_token": instagram_access_token
         }
         image_response = requests.post(image_upload_url, data=image_payload)
@@ -50,7 +26,7 @@ def instagram_post(details):
 
         creation_id = image_response_data["id"]
 
-        # Step 2: Publish the uploaded image
+        # Step 2: Publish the uploaded image to Feed
         publish_url = f"https://graph.facebook.com/v15.0/{instagram_user_id}/media_publish"
         publish_payload = {
             "creation_id": creation_id,
@@ -63,7 +39,36 @@ def instagram_post(details):
             print(f"Error publishing post on Instagram: {publish_response_data}")
             return
 
-        print("Post successfully published on Instagram!")
+        print("Post successfully published on Instagram Feed!")
+
+        # Step 3: Upload the image for Story
+        story_payload = {
+            "image_url": f"{os.path.abspath(details['image'])}",
+            "access_token": instagram_access_token
+        }
+        story_response = requests.post(image_upload_url, data=story_payload)
+        story_response_data = story_response.json()
+
+        if "id" not in story_response_data:
+            print(f"Error uploading image to Instagram Story: {story_response_data}")
+            return
+
+        story_creation_id = story_response_data["id"]
+
+        # Step 4: Publish the uploaded image as a Story
+        story_publish_payload = {
+            "creation_id": story_creation_id,
+            "is_story": "true",  # Mark it as a story
+            "access_token": instagram_access_token
+        }
+        story_publish_response = requests.post(publish_url, data=story_publish_payload)
+        story_publish_response_data = story_publish_response.json()
+
+        if "id" not in story_publish_response_data:
+            print(f"Error publishing story on Instagram: {story_publish_response_data}")
+            return
+
+        print("Story successfully published on Instagram!")
 
     except Exception as e:
         print(f"An error occurred while posting to Instagram: {e}")
