@@ -91,6 +91,66 @@ To obtain the `client_secret` for your Google Cloud app, follow these steps:
    ```
    DISCORD_TOKEN=your-bot-token-here
    ```
+## Instagram 
+To post to Instagram using the Instagram Graph API, you need the following credentials:  
+
+- **Instagram Access Token** (`INSTAGRAM_ACCESS_TOKEN`)  
+- **Instagram User ID** (`INSTAGRAM_USER_ID`)  
+
+### **Step 1: Set Up a Meta (Facebook) App**
+1. **Go to the [Meta Developer Portal](https://developers.facebook.com/)**.  
+2. Click **"Get Started"** and follow the on-screen instructions if you haven't already set up a developer account.  
+3. Go to **"My Apps"** → Click **"Create App"**.  
+4. Select **"Business"** and click **"Continue"**.  
+5. Enter the app name, contact email, and create the app.  
+
+---
+
+### **Step 2: Add Instagram API to Your App**
+1. Inside your newly created app, go to **"Add a Product"** → Select **"Instagram Graph API"** → Click **"Set Up"**.  
+2. In the left panel, go to **"Settings" → "Basic"**.  
+3. Scroll down to **"Add Platform"** → Select **"Website"** and enter your website URL (use any if testing).  
+
+---
+
+### **Step 3: Create an Instagram Business/Creator Account**
+1. Go to [Instagram](https://www.instagram.com/) and log in.  
+2. Click **Profile** → **Edit Profile**.  
+3. Under **"Professional Account"**, ensure your account is set to **Business or Creator**.  
+4. **Link your Instagram account** to a **Facebook Page** (this is mandatory).  
+   - Go to **Facebook Business Suite** → **Business Settings** → **Accounts → Instagram Accounts** → **Add Account**.  
+
+---
+
+### **Step 4: Generate a User Access Token**
+1. **Go to the [Meta Graph API Explorer](https://developers.facebook.com/tools/explorer/)**.  
+2. Select your App from the dropdown.  
+3. Under **Permissions**, add the following:  
+   ```
+   instagram_basic, instagram_content_publish
+   ```
+4. Click **"Generate Access Token"** and approve the request.  
+5. **Copy the Access Token** (`INSTAGRAM_ACCESS_TOKEN`).  
+
+---
+
+### **Step 5: Get Your Instagram User ID**
+1. Open a new browser tab and enter the following request in the [Graph API Explorer](https://developers.facebook.com/tools/explorer/):  
+   ```
+   https://graph.facebook.com/v15.0/me?fields=id,username&access_token=YOUR_ACCESS_TOKEN
+   ```
+2. Click **Submit**.  
+3. The response will contain your Instagram **User ID** (`INSTAGRAM_USER_ID`).  
+
+---
+
+### **Step 6: Store Credentials in the `.env` File**
+Create or edit the `.env` file and store the credentials securely:  
+
+```
+INSTAGRAM_ACCESS_TOKEN=your-access-token-here
+INSTAGRAM_USER_ID=your-user-id-here
+```
 
 # Usage
 ## Fields
