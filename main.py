@@ -56,7 +56,7 @@ def open_event_details():
     details_window.title("Enter Event Details")
 
     fields = [
-        "event_name", "description", "image", "instagram_access_token", "instagram_user_id", "server_name", "channel_name", "meeting_link", 
+        "event_name", "description", "image", "server_name", "channel_name", "meeting_link", 
         "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list",
         "more_info_link"
     ]
@@ -121,7 +121,7 @@ def execute_action(action):
         messagebox.showerror("Error", f"An error occurred while executing '{action}': {str(e)}")
 
 root = tk.Tk()
-root.title("Event Post Bot")
+root.title("AdminJack")
 
 # Main screen
 main_frame = tk.Frame(root)
