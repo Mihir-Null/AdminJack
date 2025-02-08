@@ -1,6 +1,13 @@
 # AdminJack
 One click administration for interest clubs
 
+# Setup and Authentication Keys
+
+# Usage
+## Fields
+## Functions
+## Custom Emails
+
 # Intended Feature list
 - Inputs
   - event description
