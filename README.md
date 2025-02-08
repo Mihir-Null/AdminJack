@@ -1,5 +1,107 @@
 # AdminJack
-One click administration for interest clubs
+One click administration for interest clubs. Currently automates discord event creation and announcement, emailing to lists as well as custom emails, google calendar event creation and posting to Instagram as a post and a story of the post. This project feature-complete but ultimately still a work in progress.
+
+# Usage
+The best way to use the bot is to clone the repository, create a new virtual environment for python using the requirements.txt and running main.py with python3. (To be fully implemented) However an .exe file has also been provided through pyinstaller, though this has not been as thoroughly tested.
+
+Once cloned go down to setup to create and load all required authentication keys. You then simply launch the application, enter in all fields for your event, and click the relevant buttons after saving. All event details will be saved locally and loaded on later uses so most setup only needs to occur the first time. This is still just a personal project for my own enjoyment however I will bugfix when I feel like it.
+
+## Functions
+![image](https://github.com/user-attachments/assets/d297690b-bab4-4304-9bdc-cd68e2da0935)
+
+**Post to Discord**: Posts an announcement to discord and mentions everyone. Also creates a discord event to collect RSVPs. Event image is sent as an embed below the announcement
+**Send Emails**: Sends emails to all emails detailed in csv about the event
+**Add to Calendar**: Creates a Google Calendar entry for the event
+**Post to Instagram**: Posts to Instagram and sends that post to story
+**Custom Emails**: Sends customized emails, specified by name in detail entry, using the custom emails dictionary defined in custom_emails.json.
+
+### A Note on Custom Emails
+Custom emails are a list of prespecified emails to be sent for things like scheduling rooms, requesting to be put on listservs, newsletters, etc. All custom emails must be specified as a set of key value pairs in `custom_emails.json`. The keys being are the "entry name" that must be referred to in the adminjack input fields to specify which custom emails should be sent, and the values are 3-tuples that correspond to the email address, subject line and body respectively.
+
+AdminJack will automatically replace formatted fields with the relevant inputted entry from Event Details. For example if you have `{club_name}` somehwhere in one of your custom email jsons. Putting in your club name in the "Enter Event Details" screen will ensure that the `{club_name}` is replaced with the actual club name that you inputted. This follows the python convention where the field must be enclosed in curly braces. A full list of fields is detailed below:
+```
+"event_name", "description", "image", "server_name", "channel_name", "meeting_link", "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list","more_info_link"
+```
+
+## A Note on General Customization
+It is important to note that all of these functions exist in the relevant Jack_[relevant cloud provider].py files and are all commented and written for readability. If you would like to customize the content, structure or sending of any of these functions, simply enter into these .py files and edit away to your heart's content. **This will not work for the .exe as it is pre-compiled, editing these for the exe will require rebuilding with pyinstaller**
+
+All details that are inputted are read and saved into a dictionary called `details` details has all the fields specified in the `fields` variable in main.py. If you would like to add a field, for example website, simply add `"website"` into the fields array and the bot will automatically reconfigure all relevant GUI items. You can then use `details["website"]` anywhere in the code for your inputted website.
+
+
+## Fields
+![image](https://github.com/user-attachments/assets/3e7bd455-6d2f-4882-a7e5-fc646079827b)
+1. **Event Name**  
+   - Enter the name/title of the event.
+   - This prefaces the event description and is used as the event title whenever relevant
+   - This helps identify the event in communications and scheduling systems.
+
+2. **Description**  
+   - Provide a description of the event that will be sent in all communications.  
+   - This can include details such as the agenda, purpose, key participants, etc.
+   - more key details such as the location, date and time will automatically be attached to the end of this description
+
+3. **Image**  
+   - Browse and upload an image related to the event.  
+   - This could be a flyer, logo, or promotional material.
+
+4. **Server Name**  
+   - Enter the name of the discord server where the event is to be announced  
+
+5. **Channel Name**  
+   - Specify the name of the channel within the server where the event will be discussed or announced.  
+
+6. **Meeting Link** -> **Event Location**
+   - **This field serves as both the meeting link and the event location for the event. Whatever is put here is exactly what will be printed out when the bot announces where the event is happening and standard string formatting can be used**
+   - **This confusing naming is currently in the process of being fixed as it requires some refactoring**
+   - Provide a URL for the meeting and/or the event location.  
+   - This can be a Zoom, Google Meet, physical location reference or a combination of all, standard string formatting can be used to combine the fields.
+
+8. **Event Date**  
+   - Enter the event date in `YYYY-MM-DD` format.  
+   - Ensures proper scheduling and calendar integration.
+
+9. **Event Time**  
+   - Specify the time of the event in `HH:MM` format (24-hour clock).  
+
+10. **Timezone**  
+   - Define the timezone of the event (e.g., `EST`, `UTC`).  
+   - This is also what is used to synchronize the event time in discord and on google calendar.
+
+11. **Calendar Name**  
+    - Provide the name of the calendar where the event should be added.
+    - If none or an invalid calendar name is provided it will instead schedule on whatever calendar is set to be the primary. 
+    - Useful for the Google Calendar integration.
+
+12. **CSV File**  
+    - Browse and select a `.csv` file containing participant or invitee data.
+    - This `.csv` file is what is used to extract email addresses for automatic emailing in the *Send Emails* Function 
+
+13. **Email Column**  
+    - Enter the column name in the CSV file that contains email addresses.  
+    - Required for sending invites automatically.
+
+14. **Event Duration**  
+    - Specify how long the event will last in hours (e.g., `1.5`).  
+
+15. **Club Name**  
+    - Enter the club or organization hosting the event.  
+    - Useful for context in shared calendars and emails.
+
+16. **Custom Emails List**  
+    - This is where you enter comma separated entries from the `custom_emails.json`
+    - All custom emails corresponding to the entries in the `.json` file are sent when you press the button
+
+17. **More Info Link**  
+    - Provide a link to more event details, such as your website, linktree, etc..  
+    - This is used as supplementary inforrmation on emails and in some other places.
+
+## **Saving the Event**
+Once all necessary fields are filled out, click **Save** to store the event details and trigger any necessary scheduling or communication actions. It is usually recommended to always Save the event before executing any given set of actions.
+
+---
+
+This `README.md` ensures users understand what to enter into each field and how the data contributes to event scheduling and communication. Let me know if you'd like modifications!
 
 # Setup and Authentication Keys
 ## Google
@@ -151,34 +253,3 @@ Create or edit the `.env` file and store the credentials securely:
 INSTAGRAM_ACCESS_TOKEN=your-access-token-here
 INSTAGRAM_USER_ID=your-user-id-here
 ```
-
-# Usage
-## Fields
-## Functions
-## Custom Emails
-
-# Intended Feature list
-- Inputs
-  - event description
-  - image
-  - various API keys
-- Output Points
-  - Instagram Posts (via graph API)
-  - Google calendar endpoints
-  - discord bot integration/announcements
-  - automatic relay emailing -> gmail integration/roundcube integration -> maybe terplink integration?
-    - automatic emailing for newsletters and room booking
-  - automatic zoom recording uploading and sharing
-  - selenium room booking, might also have to be used for terplink
-  - automatic contacting of speakers?
-  - automatic poster creation by prefilling fields -> could maybe do this by AI editing pdfs
-  - linkedin posting if I have the time
-
-## ToDo
-- add default messages for each platform to add at the end (check from existing emails/announcements)
-- specific emails to different people/ different automatic emails in formats
-- fix event formatting on discord and general formatting everywhere
-- add cross integration between all platforms (messages have calendar event, etc.)
-- add mechanism to add to specific calendars
-- canva automation
-- might want to add some way for discord admins to authorize the announcement when we need the same bot to work in multiple servers
