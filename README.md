@@ -14,6 +14,7 @@ Once cloned go down to setup to create and load all required authentication keys
 **Add to Calendar**: Creates a Google Calendar entry for the event
 **Post to Instagram**: Posts to Instagram and sends that post to story
 **Custom Emails**: Sends customized emails, specified by name in detail entry, using the custom emails dictionary defined in custom_emails.json.
+**(Planned/WIP) Create Canva Poster**: Automatically create a poster for the event from a canva template to be sent in all messaging.
 
 ### A Note on Custom Emails
 Custom emails are a list of prespecified emails to be sent for things like scheduling rooms, requesting to be put on listservs, newsletters, etc. All custom emails must be specified as a set of key value pairs in `custom_emails.json`. The keys being are the "entry name" that must be referred to in the adminjack input fields to specify which custom emails should be sent, and the values are 3-tuples that correspond to the email address, subject line and body respectively.
