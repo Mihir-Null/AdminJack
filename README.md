@@ -4,7 +4,7 @@ One click administration for interest clubs. Currently automates discord event c
 # Usage
 The best way to use the bot is to clone the repository, create a new virtual environment for python using the requirements.txt and running main.py with python3. (To be fully implemented) However an .exe file has also been provided through pyinstaller, though this has not been as thoroughly tested.
 
-Once cloned go down to setup to create and load all required authentication keys. You then simply launch the application, enter in all fields for your event, and click the relevant buttons after saving. All event details will be saved locally and loaded on later uses so most setup only needs to occur the first time. This is still just a personal project for my own enjoyment however I will bugfix when I feel like it.
+Once cloned go down to setup to create and load all required authentication keys. You then simply launch the application, enter in all fields for your event, and click the relevant buttons after saving. All event details will be saved locally and loaded on later uses so most setup only needs to occur the first time.
 
 ## Functions
 ![image](https://github.com/user-attachments/assets/d297690b-bab4-4304-9bdc-cd68e2da0935)
