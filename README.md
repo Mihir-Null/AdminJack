@@ -30,11 +30,6 @@ AdminJack will automatically replace formatted fields with the relevant inputted
 "event_name", "description", "image", "server_name", "channel_name", "meeting_link", "event_date", "event_time", "timezone", "calendar_name", "csv_file", "email_column", "event_duration", "club_name", "custom emails list","more_info_link"
 ```
 
-## A Note on General Customization
-It is important to note that all of these functions exist in the relevant Jack_[relevant cloud provider].py files and are all commented and written for readability. If you would like to customize the content, structure or sending of any of these functions, simply enter into these .py files and edit away to your heart's content. **This will not work for the .exe as it is pre-compiled, editing these for the exe will require rebuilding with pyinstaller**
-
-All details that are inputted are read and saved into a dictionary called `details` details has all the fields specified in the `fields` variable in main.py. If you would like to add a field, for example website, simply add `"website"` into the fields array and the bot will automatically reconfigure all relevant GUI items. You can then use `details["website"]` anywhere in the code for your inputted website.
-
 
 ## Fields
 ![image](https://github.com/user-attachments/assets/3e7bd455-6d2f-4882-a7e5-fc646079827b)
@@ -103,12 +98,15 @@ All details that are inputted are read and saved into a dictionary called `detai
     - Provide a link to more event details, such as your website, linktree, etc..  
     - This is used as supplementary inforrmation on emails and in some other places.
 
-## **Saving the Event**
+### **Saving the Event**
 Once all necessary fields are filled out, click **Save** to store the event details and trigger any necessary scheduling or communication actions. It is usually recommended to always Save the event before executing any given set of actions.
 
----
 
-This `README.md` ensures users understand what to enter into each field and how the data contributes to event scheduling and communication. Let me know if you'd like modifications!
+## A Note on General Customization
+It is important to note that all of these functions exist in the relevant Jack_[relevant cloud provider].py files and are all commented and written for readability. If you would like to customize the content, structure or sending of any of these functions, simply enter into these .py files and edit away to your heart's content. **This will not work for the .exe as it is pre-compiled, editing these for the exe will require rebuilding with pyinstaller**
+
+All details that are inputted are read and saved into a dictionary called `details` details has all the fields specified in the `fields` variable in main.py. If you would like to add a field, for example website, simply add `"website"` into the fields array and the bot will automatically reconfigure all relevant GUI items. You can then use `details["website"]` anywhere in the code for your inputted website.
+
 
 # Setup and Authentication Keys
 ## Google
