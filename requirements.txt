@@ -4,7 +4,7 @@ aiosignal
 anyio
 argon2-cffi
 argon2-cffi-bindings
-audioop-lts==0.2.1
+audioop-lts
 babel
 beautifulsoup4
 bleach
