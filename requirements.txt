@@ -15,6 +15,7 @@ certifi
 charset-normalizer
 click
 cryptography
+discord.py
 debugpy
 requests
 urllib3
