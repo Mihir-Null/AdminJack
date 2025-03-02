@@ -152,7 +152,7 @@ def send_custom_emails(details, email_names):
     creds = authenticate_user()
     CUSTOM_EMAILS_FILE = "custom_emails.json"
     if os.path.exists(CUSTOM_EMAILS_FILE) and os.path.getsize(CUSTOM_EMAILS_FILE) > 0:
-        with open(EVENT_DETAILS_FILE, "r") as file:
+        with open(CUSTOM_EMAILS_FILE, "r") as file:
             emails_dict = json.load(file)
     else:
         print("No custom emails found.")
